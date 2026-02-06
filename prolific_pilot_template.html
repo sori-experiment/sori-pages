@@ -235,9 +235,7 @@
         const EMAILJS_TEMPLATE_ID = 'template_la3os9b';  // e.g., template_xyz789
         
         // Initialize EmailJS
-        if (EMAILJS_USER_ID !== '7unjNH86wq_6QeV4V') {
-            emailjs.init(EMAILJS_USER_ID);
-        }
+        emailjs.init(EMAILJS_USER_ID);
         
         // Get Prolific IDs from URL
         const urlParams = new URLSearchParams(window.location.search);
@@ -523,36 +521,25 @@
             // Log data
             console.log('Final data:', finalData);
             
-            // Download as backup
-            const dataStr = JSON.stringify(finalData, null, 2);
-            const dataBlob = new Blob([dataStr], {type: 'application/json'});
-            const url = URL.createObjectURL(dataBlob);
-            const link = document.createElement('a');
-            link.href = url;
-            link.download = 'sori_results_' + state.prolificID + '_' + Date.now() + '.json';
-            link.click();
-            
             // Send via Email using EmailJS
-            if (EMAILJS_USER_ID !== '7unjNH86wq_6QeV4V') {
-                const emailParams = {
-                    prolificID: finalData.prolificID,
-                    studyID: finalData.studyID,
-                    sessionID: finalData.sessionID,
-                    completionTime: finalData.completionTime,
-                    timestamp: finalData.timestamp,
-                    ic_responses: JSON.stringify(finalData.ic_responses),
-                    mq_responses: JSON.stringify(finalData.mq_responses)
-                };
-                
-                emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, emailParams)
-                    .then(() => {
-                        console.log('Email sent successfully!');
-                    })
-                    .catch((error) => {
-                        console.error('Email send failed:', error);
-                        alert('Data backup downloaded, but email send failed. Please contact researcher.');
-                    });
-            }
+            const emailParams = {
+                prolificID: finalData.prolificID,
+                studyID: finalData.studyID,
+                sessionID: finalData.sessionID,
+                completionTime: finalData.completionTime,
+                timestamp: finalData.timestamp,
+                ic_responses: JSON.stringify(finalData.ic_responses),
+                mq_responses: JSON.stringify(finalData.mq_responses)
+            };
+            
+            emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, emailParams)
+                .then(() => {
+                    console.log('Email sent successfully!');
+                })
+                .catch((error) => {
+                    console.error('Email send failed:', error);
+                    alert('Email send failed. Please contact researcher.');
+                });
             
             // Redirect to Prolific with fixed completion code (PILOT)
             setTimeout(() => {
