@@ -232,7 +232,7 @@
         const SAMPLES_PER_SESSION = 13;
         
         // Google Sheets Apps Script URL
-        const GOOGLE_SHEETS_URL = 'https://script.google.com/macros/s/AKfycbwxrc7K0SqaBgXxeXiriVQ23LAXRYlkeMv44UB_Y4SC0NeJMZFaRrcbMIy0NVyi1r2LgQ/exec';
+        const GOOGLE_SHEETS_URL = 'https://script.google.com/macros/s/AKfycbxAu5tNVQbC38zOcXZHdFlsBfVJoAhHuYODZcXNn1YsfsfG70lfVWAwGlWrqJMB8bFtNQ/exec';
         
         // Get Prolific IDs from URL
         const urlParams = new URLSearchParams(window.location.search);
@@ -522,6 +522,7 @@
             // Send to Google Sheets
             fetch(GOOGLE_SHEETS_URL, {
                 method: "POST",
+                mode: "no-cors",
                 body: JSON.stringify(finalData),
                 headers: {
                     "Content-Type": "application/json"
